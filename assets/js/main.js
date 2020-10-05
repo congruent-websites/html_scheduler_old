@@ -243,6 +243,7 @@ async function prevWeek(index) {
         await curWeek(lastMonth, lastDate, i)
     }
 
+    console.log('prevWeek : ', checkboxes)
     Array.prototype.forEach.call(checkboxes, function (elements) {
         Array.prototype.forEach.call(elements, function (element) {
             if (document.querySelector(`#${element.id}`))
@@ -274,6 +275,7 @@ async function nextWeek(index) {
         }
         await curWeek(lastMonth, lastDate, i)
     }
+    console.log('nextWeek : ', checkboxes)
 
     Array.prototype.forEach.call(checkboxes, function (elements) {
         Array.prototype.forEach.call(elements, function (element) {
