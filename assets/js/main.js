@@ -4,6 +4,7 @@ var cMonth = now.getMonth() + 1
 var cDate = now.getDate()
 var cHour = now.getHours()
 
+console.log('------------', cYear, now.getUTCFullYear(), cMonth, now.getUTCMonth(), cDate, now.getUTCDate())
 // var aDays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
 var wDates = new Date(cYear, cMonth, 0).getDate()
 
@@ -12,6 +13,10 @@ var lastMonth = 0
 var lastDate = 0
 var pageIndex = 0
 var checkboxes = []
+
+var selectedTimes = []
+var selectedTimesLength = 0
+
 //In iteration, for retrieving the original date
 cDate = cDate - 1
 
@@ -33,6 +38,7 @@ for (var i = 0; i < 5; i++) {
 }
 
 async function curWeek(currMonth, currDate, i) {
+    console.log('curWeek : ', currMonth, currDate, i)
     await document
         .querySelector("#scheduleUl")
         .insertAdjacentHTML(
@@ -96,7 +102,7 @@ async function curWeek(currMonth, currDate, i) {
         .querySelector(`#scheduleChildLi${currMonth}_${currDate}_${i}_1`)
         .insertAdjacentHTML(
             "beforeend",
-            `<input type="checkbox" required="required" id="scheduleChildInput${currMonth}_${currDate}_${i}_1" />`
+            `<input type="checkbox" required="required" id="scheduleChildInput${currMonth}_${currDate}_${i}_1" onclick="handleTimeSelect(event)" />`
         )
     await document
         .querySelector(`#scheduleChildLi${currMonth}_${currDate}_${i}_1`)
@@ -114,12 +120,11 @@ async function curWeek(currMonth, currDate, i) {
             "beforeend",
             '<span class="hide">Call For Service</span>'
         )
-
     await document
         .querySelector(`#scheduleChildLi${currMonth}_${currDate}_${i}_2`)
         .insertAdjacentHTML(
             "beforeend",
-            `<input type="checkbox" required="required" id="scheduleChildInput${currMonth}_${currDate}_${i}_2" />`
+            `<input type="checkbox" required="required" id="scheduleChildInput${currMonth}_${currDate}_${i}_2" onclick="handleTimeSelect(event)" />`
         )
     await document
         .querySelector(`#scheduleChildLi${currMonth}_${currDate}_${i}_2`)
@@ -142,7 +147,7 @@ async function curWeek(currMonth, currDate, i) {
         .querySelector(`#scheduleChildLi${currMonth}_${currDate}_${i}_3`)
         .insertAdjacentHTML(
             "beforeend",
-            `<input type="checkbox" required="required" id="scheduleChildInput${currMonth}_${currDate}_${i}_3" />`
+            `<input type="checkbox" required="required" id="scheduleChildInput${currMonth}_${currDate}_${i}_3" onclick="handleTimeSelect(event)" />`
         )
     await document
         .querySelector(`#scheduleChildLi${currMonth}_${currDate}_${i}_3`)
@@ -160,12 +165,11 @@ async function curWeek(currMonth, currDate, i) {
             "beforeend",
             '<span class="hide">Call For Service</span>'
         )
-
     await document
         .querySelector(`#scheduleChildLi${currMonth}_${currDate}_${i}_4`)
         .insertAdjacentHTML(
             "beforeend",
-            `<input type="checkbox" required="required" id='scheduleChildInput${currMonth}_${currDate}_${i}_4' />`
+            `<input type="checkbox" required="required" id='scheduleChildInput${currMonth}_${currDate}_${i}_4' onclick="handleTimeSelect(event)" />`
         )
     await document
         .querySelector(`#scheduleChildLi${currMonth}_${currDate}_${i}_4`)
@@ -188,7 +192,7 @@ async function curWeek(currMonth, currDate, i) {
         .querySelector(`#scheduleChildLi${currMonth}_${currDate}_${i}_5`)
         .insertAdjacentHTML(
             "beforeend",
-            `<input type="checkbox" required="required" id="scheduleChildInput${currMonth}_${currDate}_${i}_5" />`
+            `<input type="checkbox" required="required" id="scheduleChildInput${currMonth}_${currDate}_${i}_5" onclick="handleTimeSelect(event)" />`
         )
     await document
         .querySelector(`#scheduleChildLi${currMonth}_${currDate}_${i}_5`)
@@ -312,7 +316,8 @@ function handleNext() {
     checkboxes = checkboxes.concat(
         document.querySelectorAll('input[type="checkbox"]:checked')
     )
-    console.log(checkboxes)
+    console.log(event, checkboxes)
+
     if (checkboxes[0].length === 0) {
         Toastify({
             text: "Please Select A Time of Service.",
@@ -344,11 +349,27 @@ function handleValidate(event) {
         event.target.parentNode.parentNode.classList.add("valid", "filled")
     }
 }
+function handleTimeSelect(event) {
+    if (event.target.checked)
+        selectedTimes.push(event.target)
+    else {
+        for (var i=0; i<selectedTimes.length; i++) {
+            if (selectedTimes[i].id === event.target.id) 
+                selectedTimes.splice(i, 1);
+        }
+
+    }
+
+    if (selectedTimes.length > 2) {
+        event.target.checked = false
+        selectedTimes.pop()
+    }
+}
 function validateEmail(event) {
     var email = event.target.value
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     var valid = re.test(String(email).toLowerCase())
-    console.log("valid", email, valid)
+
     if (valid) {
         event.target.parentNode.parentNode.classList.remove("invalid")
         event.target.parentNode.parentNode.classList.add("valid", "filled")
