@@ -8,18 +8,6 @@ var cDay = 0
 // var cDate = now.getUTCDate()
 // var cHour = now.getUTCHours()
 
-console.log(
-    "------------",
-    cYear,
-    now.getUTCFullYear(),
-    cMonth,
-    now.getUTCMonth(),
-    cDate,
-    now.getUTCDate(),
-    cHour,
-    now.getUTCHours()
-)
-
 var wDates = new Date(cYear, cMonth, 0).getDate()
 
 var lastWDates = 0
@@ -53,7 +41,6 @@ for (var i = 0; i < 5; i++) {
 }
 
 async function curWeek(currMonth, currDate, i) {
-    console.log("curWeek : ", currMonth, currDate, i, new Date(cYear, currMonth, currDate), new Date(cYear, currMonth-1, currDate).getDay())
     await document
         .querySelector("#scheduleUl")
         .insertAdjacentHTML(
@@ -254,12 +241,9 @@ async function prevWeek() {
         await curWeek(lastMonth, lastDate, i)
     }
 
-    console.log("prevWeek : ", selectedTimes)
-    Array.prototype.forEach.call(selectedTimes, function (elements) {
-        Array.prototype.forEach.call(elements, function (element) {
-            if (document.querySelector(`#${element.id}`))
-                document.querySelector(`#${element.id}`).checked = true
-        })
+    Array.prototype.forEach.call(selectedTimes, function (element) {
+        if (document.querySelector(`#${element.id}`))
+            document.querySelector(`#${element.id}`).checked = true
     })
 }
 async function nextWeek() {
@@ -281,13 +265,10 @@ async function nextWeek() {
         }
         await curWeek(lastMonth, lastDate, i)
     }
-    console.log("nextWeek : ", selectedTimes)
 
-    Array.prototype.forEach.call(selectedTimes, function (elements) {
-        Array.prototype.forEach.call(elements, function (element) {
-            if (document.querySelector(`#${element.id}`))
-                document.querySelector(`#${element.id}`).checked = true
-        })
+    Array.prototype.forEach.call(selectedTimes, function (element) {
+        if (document.querySelector(`#${element.id}`))
+            document.querySelector(`#${element.id}`).checked = true
     })
 }
 function createStateSelect() {
@@ -321,8 +302,6 @@ function createCustomerSelect() {
     })
 }
 function handleNext() {
-    console.log(selectedTimes)
-
     if (selectedTimes.length === 0) {
         Toastify({
             text: "Please Select A Time of Service.",
@@ -372,6 +351,31 @@ function handleMobileScheduleDay(month, day) {
     console.log(month, day)
     document.getElementsByClassName('current-day')[0].classList.remove('current-day')
     document.querySelector(`#scheduleLi${month}_${day}`).classList.add('current-day')
+}
+function handleRequest() {
+    var time = []
+    Array.prototype.forEach.call(selectedTimes, function (element) {
+        filtered = element.id.replace(/\D+/g, ' ').trim().split(' ').map(e => parseInt(e));
+        time.push(cYear + '/' + filtered[0] + '/' + filtered[1] + '/' + scheduleTimes[3])
+    })
+    const sch_firstName = document.querySelector('#SchedulerLocalContactForm_ITM0_FirstName').value
+    const sch_lastName = document.querySelector('#SchedulerLocalContactForm_ITM0_LastName').value
+    const sch_email = document.querySelector('#SchedulerLocalContactForm_ITM0_EmailAddress').value
+    const sch_phone = document.querySelector('#SchedulerLocalContactForm_ITM0_Phone').value
+    const sch_address = document.querySelector('#SchedulerLocalContactForm_ITM0_Address').value
+    const sch_city = document.querySelector('#SchedulerLocalContactForm_ITM0_City').value
+    const sch_state = document.querySelector('#SchedulerLocalContactForm_ITM0_State').value
+    const sch_zipCode = document.querySelector('#SchedulerLocalContactForm_ITM0_ZipCode').value
+    const sch_serviceType = document.querySelector('#SchedulerLocalContactForm_ITM0_ServiceType').value
+    const sch_leadTypeID = document.querySelector('#SchedulerLocalContactForm_ITM0_LeadTypeID').value
+    const sch_message = document.querySelector('#SchedulerLocalContactForm_ITM0_Message').value
+
+    const emailTo = 'emily@congruentstory.com'
+    const emailCC = 'emily@congruentstory.com'
+    const emailSub = 'Schedule'
+    const emailBody = `${time} <br> FirstName: ${sch_firstName} \r\n LasttName: ${sch_lastName} \r\t\n Email: ${sch_email} \r\n Phone: ${sch_phone} \r\n Address: ${sch_address} \r\n City: ${sch_city} \r\n State: ${sch_state} \r\n ZipCode: ${sch_zipCode} \r\n ServiceType: ${sch_serviceType} \r\n LeadType: ${sch_leadTypeID} \r\n Message: ${sch_message}`
+    
+    window.open("mailto:"+emailTo+'?cc='+emailCC+'&subject='+emailSub+'&body='+encodeURIComponent(emailBody));
 }
 function validateEmail(event) {
     var email = event.target.value

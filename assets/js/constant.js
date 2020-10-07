@@ -69,7 +69,6 @@ var stateKeys = [
     "WI",
     "WV",
     "WY",
-    "WY",
 ]
 var stateValues = [
     "State",
@@ -127,16 +126,28 @@ var stateValues = [
     "WI",
     "WV",
     "WY",
-    "WY",
 ]
 
 var serviceKeys = ["", "Residential", "Commercial"]
 var serviceValues = ["Service Type?", "Residential", "Commercial"]
 
-var customerKeys = ["", "1", "11", "13"]
+var customerKeys = [
+    "",
+    "Yes, I am a potential new customer.",
+    "No, I am a current existing customer.",
+    "I'm neither.",
+]
 var customerValues = [
     "Are you a new customer?",
     "Yes, I am a potential new customer.",
     "No, I am a current existing customer.",
     "I'm neither.",
+]
+
+var scheduleTimes = [
+    "8:00 AM - 10:00 AM",
+    "10:00 AM - 12:00 PM",
+    "12:00 PM - 2:00 PM",
+    "2:00 PM - 4:00 PM",
+    "4:00 PM - 6:00 PM",
 ]

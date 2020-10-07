@@ -143,7 +143,6 @@
                                                         required="required"
                                                         type="text"
                                                         id="SchedulerLocalContactForm_ITM0_FirstName"
-                                                        name="SchedulerLocalContactForm$ITM0$FirstName"
                                                         value=""
                                                     />
                                                     <div
@@ -171,7 +170,6 @@
                                                         required="required"
                                                         type="text"
                                                         id="SchedulerLocalContactForm_ITM0_LastName"
-                                                        name="SchedulerLocalContactForm$ITM0$LastName"
                                                         value=""
                                                     />
                                                     <div
@@ -199,7 +197,6 @@
                                                         required="required"
                                                         type="email"
                                                         id="SchedulerLocalContactForm_ITM0_EmailAddress"
-                                                        name="SchedulerLocalContactForm$ITM0$EmailAddress"
                                                         value=""
                                                     />
                                                     <div
@@ -237,7 +234,6 @@
                                                         pattern="[(]\d{3}[)][\s]\d{3}[\-]\d{4}"
                                                         class="phone-mask"
                                                         required="required"
-                                                        name="SchedulerLocalContactForm$ITM0$Phone"
                                                         value=""
                                                         onkeypress="return onlyNumberKey(event)"
                                                     />
@@ -274,7 +270,6 @@
                                                         required="required"
                                                         type="text"
                                                         id="SchedulerLocalContactForm_ITM0_Address"
-                                                        name="SchedulerLocalContactForm$ITM0$Address"
                                                         value=""
                                                     />
                                                     <div
@@ -302,7 +297,6 @@
                                                         required="required"
                                                         type="text"
                                                         id="SchedulerLocalContactForm_ITM0_City"
-                                                        name="SchedulerLocalContactForm$ITM0$City"
                                                         value=""
                                                     />
                                                     <div
@@ -328,7 +322,6 @@
                                                     <select
                                                         id="SchedulerLocalContactForm_ITM0_State"
                                                         required="required"
-                                                        name="SchedulerLocalContactForm$ITM0$State"
                                                     ></select>
                                                     <svg
                                                         viewBox="0 0 36 36"
@@ -363,7 +356,6 @@
                                                         required="required"
                                                         type="text"
                                                         id="SchedulerLocalContactForm_ITM0_ZipCode"
-                                                        name="SchedulerLocalContactForm$ITM0$ZipCode"
                                                         value=""
                                                         maxlength="6"
                                                         onkeypress="return onlyNumberKey(event)"
@@ -391,9 +383,8 @@
                                                     <select
                                                         id="SchedulerLocalContactForm_ITM0_ServiceType"
                                                         required="required"
-                                                        name="SchedulerLocalContactForm$ITM0$ServiceType"
                                                     ></select>
-                                                    <svg
+                                                    <svg 
                                                         viewBox="0 0 36 36"
                                                         data-use="/cms/svg/site/mjsej3h07k_.36.svg#down_arrow"
                                                     >
@@ -424,7 +415,6 @@
                                                     <select
                                                         id="SchedulerLocalContactForm_ITM0_LeadTypeID"
                                                         required="required"
-                                                        name="SchedulerLocalContactForm$ITM0$LeadTypeID"
                                                     ></select>
                                                     <svg
                                                         viewBox="0 0 36 36"
@@ -458,7 +448,6 @@
                                                         required="required"
                                                         type="text"
                                                         id="SchedulerLocalContactForm_ITM0_Message"
-                                                        name="SchedulerLocalContactForm$ITM0$Message"
                                                     ></textarea>
                                                     <div
                                                         class="validation"
@@ -472,12 +461,6 @@
                                         </ul>
                                     </fieldset>
                                     <div class="btn-con button-wrap">
-                                        <input
-                                            id="SchedulerLocalContactForm_ITM0_FFD6"
-                                            type="hidden"
-                                            name="SchedulerLocalContactForm$ITM0$FFD6"
-                                            value="1601259703098"
-                                        />
                                         <a
                                             class="btn v2 back ui-tab"
                                             data-tab="Step 1"
@@ -486,7 +469,7 @@
                                         >
                                         <button
                                             class="btn v2"
-                                            type="submit"
+                                            onclick="handleRequest()"
                                             id="SchedulerLocalContactForm_ITM0_ctl14"
                                             name="SchedulerLocalContactForm$ITM0$ctl14"
                                             data-commandname="Update"
