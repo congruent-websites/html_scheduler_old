@@ -41,15 +41,23 @@ for (var i = 0; i < 5; i++) {
 }
 
 async function curWeek(currMonth, currDate, i) {
-    await document
-        .querySelector("#scheduleUl")
-        .insertAdjacentHTML(
-            "beforeend",
-            `<li id="scheduleLi${currMonth}_${currDate}" tabindex="-1" class="Date-Option set Item${
-                i * 5 + 1
-            } active ${mobileCheck() && i === 0 ? 'current-day' : null}" data-row="${i * 5 + 1}" data-results="75" 
-            onclick="${mobileCheck() ? 'handleMobileScheduleDay('+`${currMonth}`+','+`${currDate}`+')' : null}"></li>`
-        )
+    await document.querySelector("#scheduleUl").insertAdjacentHTML(
+        "beforeend",
+        `<li id="scheduleLi${currMonth}_${currDate}" tabindex="-1" class="Date-Option set Item${
+            i * 5 + 1
+        } active ${
+            mobileCheck() && i === 0 ? "current-day" : null
+        }" data-row="${i * 5 + 1}" data-results="75" 
+            onclick="${
+                mobileCheck()
+                    ? "handleMobileScheduleDay(" +
+                      `${currMonth}` +
+                      "," +
+                      `${currDate}` +
+                      ")"
+                    : null
+            }"></li>`
+    )
     await document
         .querySelector(`#scheduleLi${currMonth}_${currDate}`)
         .insertAdjacentHTML(
@@ -64,7 +72,12 @@ async function curWeek(currMonth, currDate, i) {
         )
     await document
         .querySelector(`#scheduleDiv${currMonth}_${currDate}`)
-        .insertAdjacentHTML("beforeend", `<strong>${aDays[new Date(cYear, currMonth-1, currDate).getDay()]}</strong>`)
+        .insertAdjacentHTML(
+            "beforeend",
+            `<strong>${
+                aDays[new Date(cYear, currMonth - 1, currDate).getDay()]
+            }</strong>`
+        )
     await document
         .querySelector(`#scheduleLi${currMonth}_${currDate}`)
         .insertAdjacentHTML(
@@ -349,33 +362,123 @@ function handleTimeSelect(event) {
 }
 function handleMobileScheduleDay(month, day) {
     console.log(month, day)
-    document.getElementsByClassName('current-day')[0].classList.remove('current-day')
-    document.querySelector(`#scheduleLi${month}_${day}`).classList.add('current-day')
+    document
+        .getElementsByClassName("current-day")[0]
+        .classList.remove("current-day")
+    document
+        .querySelector(`#scheduleLi${month}_${day}`)
+        .classList.add("current-day")
 }
 function handleRequest() {
     var time = []
     Array.prototype.forEach.call(selectedTimes, function (element) {
-        filtered = element.id.replace(/\D+/g, ' ').trim().split(' ').map(e => parseInt(e));
-        time.push(cYear + '/' + filtered[0] + '/' + filtered[1] + '/' + scheduleTimes[3])
+        filtered = element.id
+            .replace(/\D+/g, " ")
+            .trim()
+            .split(" ")
+            .map((e) => parseInt(e))
+        time.push(
+            cYear +
+                "/" +
+                filtered[0] +
+                "/" +
+                filtered[1] +
+                "/" +
+                scheduleTimes[3]
+        )
     })
-    const sch_firstName = document.querySelector('#SchedulerLocalContactForm_ITM0_FirstName').value
-    const sch_lastName = document.querySelector('#SchedulerLocalContactForm_ITM0_LastName').value
-    const sch_email = document.querySelector('#SchedulerLocalContactForm_ITM0_EmailAddress').value
-    const sch_phone = document.querySelector('#SchedulerLocalContactForm_ITM0_Phone').value
-    const sch_address = document.querySelector('#SchedulerLocalContactForm_ITM0_Address').value
-    const sch_city = document.querySelector('#SchedulerLocalContactForm_ITM0_City').value
-    const sch_state = document.querySelector('#SchedulerLocalContactForm_ITM0_State').value
-    const sch_zipCode = document.querySelector('#SchedulerLocalContactForm_ITM0_ZipCode').value
-    const sch_serviceType = document.querySelector('#SchedulerLocalContactForm_ITM0_ServiceType').value
-    const sch_leadTypeID = document.querySelector('#SchedulerLocalContactForm_ITM0_LeadTypeID').value
-    const sch_message = document.querySelector('#SchedulerLocalContactForm_ITM0_Message').value
+    const sch_firstName = document.querySelector(
+        "#SchedulerLocalContactForm_ITM0_FirstName"
+    ).value
+    const sch_lastName = document.querySelector(
+        "#SchedulerLocalContactForm_ITM0_LastName"
+    ).value
+    const sch_email = document.querySelector(
+        "#SchedulerLocalContactForm_ITM0_EmailAddress"
+    ).value
+    const sch_phone = document.querySelector(
+        "#SchedulerLocalContactForm_ITM0_Phone"
+    ).value
+    const sch_address = document.querySelector(
+        "#SchedulerLocalContactForm_ITM0_Address"
+    ).value
+    const sch_city = document.querySelector(
+        "#SchedulerLocalContactForm_ITM0_City"
+    ).value
+    const sch_state = document.querySelector(
+        "#SchedulerLocalContactForm_ITM0_State"
+    ).value
+    const sch_zipCode = document.querySelector(
+        "#SchedulerLocalContactForm_ITM0_ZipCode"
+    ).value
+    const sch_serviceType = document.querySelector(
+        "#SchedulerLocalContactForm_ITM0_ServiceType"
+    ).value
+    const sch_leadTypeID = document.querySelector(
+        "#SchedulerLocalContactForm_ITM0_LeadTypeID"
+    ).value
+    const sch_message = document.querySelector(
+        "#SchedulerLocalContactForm_ITM0_Message"
+    ).value
 
-    const emailTo = 'emily@congruentstory.com'
-    const emailCC = 'emily@congruentstory.com'
-    const emailSub = 'Schedule'
+    var invalidFields = document.getElementsByClassName("invalid")
+    if (invalidFields.length > 0) {
+        Toastify({
+            text: "Please correct in all fields.",
+            duration: 5000,
+            newWindow: true,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            backgroundColor: "#e74c3c",
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            onClick: function () {}, // Callback after click
+        }).showToast()
+        return
+    }
+
+    if (
+        sch_firstName === "" ||
+        sch_lastName === "" ||
+        sch_email === "" ||
+        sch_phone === "" ||
+        sch_address === "" ||
+        sch_city === "" ||
+        sch_state === "" ||
+        sch_zipCode === "" ||
+        sch_serviceType === "" ||
+        sch_leadTypeID === "" ||
+        sch_message === ""
+    ) {
+        Toastify({
+            text: "Please fill in all fields.",
+            duration: 5000,
+            newWindow: true,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            backgroundColor: "#e74c3c",
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            onClick: function () {}, // Callback after click
+        }).showToast()
+        return
+    }
+
+    const emailTo = "emily@congruentstory.com"
+    const emailCC = "emily@congruentstory.com"
+    const emailSub = "Schedule"
     const emailBody = `${time} <br> FirstName: ${sch_firstName} \r\n LasttName: ${sch_lastName} \r\t\n Email: ${sch_email} \r\n Phone: ${sch_phone} \r\n Address: ${sch_address} \r\n City: ${sch_city} \r\n State: ${sch_state} \r\n ZipCode: ${sch_zipCode} \r\n ServiceType: ${sch_serviceType} \r\n LeadType: ${sch_leadTypeID} \r\n Message: ${sch_message}`
-    
-    window.open("mailto:"+emailTo+'?cc='+emailCC+'&subject='+emailSub+'&body='+encodeURIComponent(emailBody));
+
+    window.open(
+        "mailto:" +
+            emailTo +
+            "?cc=" +
+            emailCC +
+            "&subject=" +
+            emailSub +
+            "&body=" +
+            encodeURIComponent(emailBody)
+    )
 }
 function validateEmail(event) {
     var email = event.target.value
@@ -423,4 +526,3 @@ document
             ? x[1]
             : "(" + x[1] + ") " + x[2] + (x[3] ? "-" + x[3] : "")
     })
-
