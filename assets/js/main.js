@@ -467,7 +467,7 @@ function handleRequest() {
     const emailTo = "emily@congruentstory.com"
     const emailCC = "emily@congruentstory.com"
     const emailSub = "Schedule"
-    const emailBody = `${time} <br> FirstName: ${sch_firstName} \r\n LasttName: ${sch_lastName} \r\t\n Email: ${sch_email} \r\n Phone: ${sch_phone} \r\n Address: ${sch_address} \r\n City: ${sch_city} \r\n State: ${sch_state} \r\n ZipCode: ${sch_zipCode} \r\n ServiceType: ${sch_serviceType} \r\n LeadType: ${sch_leadTypeID} \r\n Message: ${sch_message}`
+    const emailBody = `${time} \r\n FirstName: ${sch_firstName} \r\n LasttName: ${sch_lastName} \r\t\n Email: ${sch_email} \r\n Phone: ${sch_phone} \r\n Address: ${sch_address} \r\n City: ${sch_city} \r\n State: ${sch_state} \r\n ZipCode: ${sch_zipCode} \r\n ServiceType: ${sch_serviceType} \r\n LeadType: ${sch_leadTypeID} \r\n Message: ${sch_message}`
 
     window.open(
         "mailto:" +
