@@ -1,12 +1,23 @@
-var now = new Date()
-var cYear = now.getUTCFullYear()
-var cMonth = now.getMonth() + 1
-var cDate = now.getDate()
-var cHour = now.getHours()
+const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
+
+var currentUtcTime = new Date(); // This is in UTC
+
+// Converts the UTC time to a locale specific format, including adjusting for timezone.
+var currentDateTime = new Date(currentUtcTime.toLocaleString('en-US', { timeZone: timeZone }));
+
+console.log('currentDateTime: ' ,        currentDateTime.toLocaleDateString());
+console.log('currentDateTime Year: ' , currentDateTime.getFullYear());
+console.log('currentDateTime Month: ' , parseInt(currentDateTime.getMonth())+1);
+console.log('currentDateTime Date: ' , currentDateTime.getDate());
+console.log('currentDateTime Hour: ' , currentDateTime.getHours());
+console.log('currentDateTime Minute: ' , currentDateTime.getMinutes());
+
+var cYear = currentDateTime.getFullYear()
+var cMonth = currentDateTime.getMonth() + 1
+var cDate = currentDateTime.getDate()
+var cHour = currentDateTime.getHours()
+var cMin = currentDateTime.getMinutes()
 var cDay = 0
-// var cMonth = now.getUTCMonth() + 1
-// var cDate = now.getUTCDate()
-// var cHour = now.getUTCHours()
 
 var wDates = new Date(cYear, cMonth, 0).getDate()
 
@@ -38,6 +49,29 @@ for (var i = 0; i < 5; i++) {
     lastMonth = cMonth
     lastDate = cDate
     lastWDates = new Date(cYear, lastMonth, 0).getDate()
+}
+
+function parseISO8601String(dateString) {
+    var timebits = /^([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2})(?::([0-9]*)(\.[0-9]*)?)?(?:([+-])([0-9]{2})([0-9]{2}))?/;
+    var m = timebits.exec(dateString);
+    var resultDate;
+    if (m) {
+        var utcdate = Date.UTC(parseInt(m[1]),
+                               parseInt(m[2])-1, // months are zero-offset (!)
+                               parseInt(m[3]),
+                               parseInt(m[4]), parseInt(m[5]), // hh:mm
+                               (m[6] && parseInt(m[6]) || 0),  // optional seconds
+                               (m[7] && parseFloat(m[7])*1000) || 0); // optional fraction
+        // utcdate is milliseconds since the epoch
+        if (m[9] && m[10]) {
+            var offsetMinutes = parseInt(m[9]) * 60 + parseInt(m[10]);
+            utcdate += (m[8] === '+' ? -1 : +1) * offsetMinutes * 60000;
+        }
+        resultDate = new Date(utcdate);
+    } else {
+        resultDate = null;
+    }
+    return resultDate;
 }
 
 async function curWeek(currMonth, currDate, i) {
@@ -127,7 +161,7 @@ async function curWeek(currMonth, currDate, i) {
             `<label id="scheduleChildLabel${currMonth}_${currDate}_${i}_1" for="scheduleChildInput${currMonth}_${currDate}_${i}_1" title="${
                 aMonths[currMonth - 1]
             } ${currDate}, ${cYear} 8:00 AM - 10:00 AM" tabindex='0' class="${
-                cHour > 10 && now.getDate() === currDate ? "unavailable" : ""
+                cHour >= 10 && currentDateTime.getDate() === currDate ? "unavailable" : ""
             }">8:00 AM - 10:00 AM</label>`
         )
     await document
@@ -149,7 +183,7 @@ async function curWeek(currMonth, currDate, i) {
             `<label id="scheduleChildLabel${currMonth}_${currDate}_${i}_2" for="scheduleChildInput${currMonth}_${currDate}_${i}_2" title="${
                 aMonths[currMonth - 1]
             } ${currDate}, ${cYear} 10:00 AM - 12:00 PM" tabindex='0' class="${
-                cHour > 12 && now.getDate() === currDate ? "unavailable" : ""
+                cHour >= 12 && currentDateTime.getDate() === currDate ? "unavailable" : ""
             }">10:00 AM - 12:00 PM</label>`
         )
     await document
@@ -172,7 +206,7 @@ async function curWeek(currMonth, currDate, i) {
             `<label id="scheduleChildLabel${currMonth}_${currDate}_${i}_3" for="scheduleChildInput${currMonth}_${currDate}_${i}_3" title="${
                 aMonths[currMonth - 1]
             } ${currDate}, ${cYear} 12:00 PM - 2:00 PM" tabindex='0' class="${
-                cHour > 14 && now.getDate() === currDate ? "unavailable" : ""
+                cHour >= 14 && currentDateTime.getDate() === currDate ? "unavailable" : ""
             }">12:00 PM - 2:00 PM</label>`
         )
     await document
@@ -194,7 +228,7 @@ async function curWeek(currMonth, currDate, i) {
             `<label id="scheduleChildLabel${currMonth}_${currDate}_${i}_4" for="scheduleChildInput${currMonth}_${currDate}_${i}_4" title="${
                 aMonths[currMonth - 1]
             } ${currDate}, ${cYear} 2:00 PM - 4:00 PM" tabindex='0' class="${
-                cHour > 16 && now.getDate() === currDate ? "unavailable" : ""
+                cHour >= 16 && currentDateTime.getDate() === currDate ? "unavailable" : ""
             }">2:00 PM - 4:00 PM</label>`
         )
     await document
@@ -217,7 +251,7 @@ async function curWeek(currMonth, currDate, i) {
             `<label id="scheduleChildLabel${currMonth}_${currDate}_${i}_5" for="scheduleChildInput${currMonth}_${currDate}_${i}_5" title="${
                 aMonths[currMonth - 1]
             } ${currDate}, ${cYear} 4:00 PM - 6:00 PM" tabindex='0' class="${
-                cHour > 18 && now.getDate() === currDate ? "unavailable" : ""
+                cHour >= 18 && currentDateTime.getDate() === currDate ? "unavailable" : ""
             }">4:00 PM - 6:00 PM</label>`
         )
     await document
